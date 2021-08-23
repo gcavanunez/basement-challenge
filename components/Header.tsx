@@ -12,7 +12,6 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 const Header = () => {
-  // let [plan, setPlan] = useState("startup");
   const {
     total,
     cart,
