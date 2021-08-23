@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             content="A man can’t have enough base­ment swag"
           />
           <meta name="twitter:site" content="@gcavanunez" />
-          <meta property="twitter:image" content="/open-graph.jpg"></meta>
+          <meta property="twitter:image" content="https://basement-challenge-one.vercel.app/open-graph.jpg"></meta>
           <meta name="og:title" content="Basement studio - Challenge" />
           <meta
             name="og:description"
@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           />
           <meta name="og:site_name" content="Basement studio - Challenge" />
           <meta name="og:type" content="website" />
-          <meta property="og:image" content="/open-graph.jpg"></meta>
+          <meta property="og:image" content="https://basement-challenge-one.vercel.app/open-graph.jpg"></meta>
         </Head>
         <div className="min-h-screen">
           <Header />
