@@ -29,8 +29,6 @@ a {
 .marquee {
   animation: 12.3571s linear -1s infinite normal none running marquee;
   padding-right: 50px;
-  /* white-space: nowrap;
-  will-change: transform; */
 }
 @keyframes marquee {
   0% {

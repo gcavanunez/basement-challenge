@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface CartItem {
   quantity: number;
+  optionSelected: string;
   product: Product;
 }
 type globalContext = {
@@ -30,14 +31,30 @@ export function GlobalProvider({ children }: Props) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = (product: Product) => {
-    setCart([...cart, { product, quantity: 1 }]);
+    const productFromCart = cart.find((row) => row.product.id === product.id);
+    if (productFromCart) {
+      const indexProductFromCart = cart.findIndex(
+        (row) => row.product.id === product.id
+      );
+      cart[indexProductFromCart].quantity++;
+      setCart([...cart]);
+      return;
+    }
+    setCart([
+      ...cart,
+      { product, quantity: 1, optionSelected: product.options[0].values[0] },
+    ]);
   };
 
   const removeFromCart = (product: Product) => {
     setCart(cart.filter((row) => row.product.id !== product.id));
   };
   const total = React.useMemo(
-    () => cart.reduce((total, { product }) => total + product.price, 0),
+    () =>
+      cart.reduce(
+        (total, { product, quantity }) => total + product.price * quantity,
+        0
+      ),
     [cart]
   );
   const value = {

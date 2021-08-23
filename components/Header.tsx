@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, RadioGroup } from "@headlessui/react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
@@ -7,8 +7,14 @@ import logoSm from "@/assets/logo-sm.svg";
 import hd4k from "@/assets/hd-4k.svg";
 import { useCart } from "@/context/GlobalState";
 import { formatMoney } from "@/utils/moneyFormat";
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 const Header = () => {
   const [open, setOpen] = useState(false);
+
+  let [plan, setPlan] = useState("startup");
   const { total, cart } = useCart();
   return (
     <header>
@@ -76,7 +82,7 @@ const Header = () => {
           className="fixed z-10 inset-0 overflow-y-auto"
           onClose={setOpen}
         >
-          <div className="flex items-end justify-center lg:justify-end lg:items-start  min-h-screen pt-4 px-4 pb-20 text-center sm:flex sm:p-0">
+          <div className="flex  items-stretch justify-items-stretch lg:justify-end lg:items-start  min-h-screen   text-center  ">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -98,7 +104,7 @@ const Header = () => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div className="inline-block align-bottom bg-black border-l-2 border-b-2 border-white    text-left overflow-hidden shadow-xl transform transition-all lg:my-0 sm:align-middle lg:max-w-screen-md sm:w-full   ">
+              <div className="sm:inline-block flex flex-col justify-between  bg-black sm:border-l-2 sm:border-b-2 border-white    text-left overflow-hidden shadow-xl transform transition-all lg:my-0 sm:align-middle lg:max-w-[824px] sm:w-full   flex-1  sm:h-auto">
                 <div className="px-4 pt-5 pb-4 sm:p-6">
                   <div className="flex justify-end">
                     <button
@@ -108,24 +114,122 @@ const Header = () => {
                       → Close
                     </button>
                   </div>
-                  <div className="mt-3 text-center sm:mt-5">
+                  <div className="mt-3  sm:mt-5">
                     <Dialog.Title
-                      as="h3"
-                      className="       text-gray-900 uppercase text-9xl font-bold"
+                      as="h2"
+                      className="text-center text-gray-900 uppercase  text-9xl font-bold"
                     >
                       <span className="text-white">Your</span>{" "}
                       <span className="text-black outline-text">Cart</span>
                     </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">Empty</p>
+                      <ul className="space-y-6">
+                        {cart.map(({ product, quantity }) => {
+                          return (
+                            <li className="border-2 border-white   ">
+                              <div className="flex  ">
+                                <div className="p-2 sm:p-3.5  flex-shrink-0">
+                                  <div className="bg-gradient-to-b from-basement-dark/0  to-basement-light   relative">
+                                    <div className="hidden sm:block">
+                                      <Image
+                                        alt={product.name}
+                                        height={234}
+                                        width={234}
+                                        objectFit="contain"
+                                        src={product.image}
+                                      />
+                                    </div>
+                                    <div className="block sm:hidden">
+                                      <Image
+                                        alt={product.name}
+                                        height={104}
+                                        width={104}
+                                        objectFit="contain"
+                                        src={product.image}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="flex pt-2 pr-3.5 pb-3 justify-between  flex-col ml-2 sm:ml-4 flex-1 ">
+                                  <div className="text-left flex-1 ">
+                                    <h3 className="text-white text-sm leading-4 sm:text-4xl uppercase font-bold">
+                                      {product.name}
+                                    </h3>
+                                    <p className="text-basement-gray mt-2 text-xxs sm:text-xl sm:leading-5 font-bold">
+                                      {product.description}
+                                    </p>
+                                  </div>
+                                  <div className="sm:mt-0 mt-2">
+                                    <div className="flex items-center ">
+                                      <p className="sm:text-xl text-xxs uppercase sm:leading-5 font-bold tracking-wide">
+                                        Quantity:
+                                      </p>
+                                      <span className="ml-4 rounded-3xl border-2 border-white px-2 sm:px-3.5 sm:text-xl sm:leading-5 text-xxs py-1 sm:space-x-1.5 space-x-1">
+                                        <button>-</button>
+                                        <span>1</span>
+                                        <button>+</button>
+                                      </span>
+                                    </div>
+                                    <div className="flex justify-betwee n sm:flex-row flex-col sm:mt-2 mt-1">
+                                      {product.options.map((option) => (
+                                        <RadioGroup
+                                          value={plan}
+                                          key={option.label}
+                                          onChange={setPlan}
+                                          className="flex items-center"
+                                        >
+                                          <RadioGroup.Label className="sm:text-xl text-xxs uppercase sm:leading-5 font-bold tracking-wide">
+                                            {option.label}
+                                          </RadioGroup.Label>
+                                          <div className="ml-4 flex space-x-2">
+                                            {option.values.map((row) => (
+                                              <RadioGroup.Option
+                                                key={row}
+                                                value={row}
+                                              >
+                                                {({ checked }) => (
+                                                  <span
+                                                    className={classNames(
+                                                      checked
+                                                        ? "border-white"
+                                                        : "border-transparent",
+                                                      "sm:w-10 sm:h-10 w-5 h-5  border-2 text-xxs sm:text-xl sm:leading-5 flex items-center justify-center rounded-full "
+                                                    )}
+                                                  >
+                                                    {row}
+                                                  </span>
+                                                )}
+                                              </RadioGroup.Option>
+                                            ))}
+                                          </div>
+                                        </RadioGroup>
+                                      ))}
+                                      <div className=" ">
+                                        <p className="text-sm sm:text-4xl font-bold uppercase">
+                                          {formatMoney(
+                                            product.price * quantity
+                                          )}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
                     </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 border-t-2 text-4xl font-bold uppercase border-white divide-x-2 divide-white">
-                  <div className="col-span-2 py-6 pl-8">
-                    <p className="text-white ">Total: {formatMoney(total)}</p>
+                <div className="grid sm:grid-cols-3 sm:border-t-2 text-4xl font-bold uppercase border-white sm:divide-x-2 sm:divide-y-0 divide-y-2 divide-white sm:p-0 p-4">
+                  <div className="sm:col-span-2 sm:py-6 sm:pl-8 pb-5">
+                    <p className="text-white flex justify-between sm:block">
+                      Total<span className="hidden sm:inline-block">:</span>{" "}
+                      <span>{formatMoney(total)}</span>
+                    </p>
                   </div>
-                  <button className="text-black outline-text  text-center py-6 uppercase">
+                  <button className="text-black font-black outline-text text-5xl tracking-[10px] sm:text-4xl sm:tracking-normal  text-center py-6 uppercase">
                     Checkout
                   </button>
                 </div>

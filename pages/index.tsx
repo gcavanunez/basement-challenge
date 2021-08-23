@@ -56,6 +56,7 @@ const Home: NextPage<Props> = ({ products }) => {
                 <div className="bg-gradient-to-b from-basement-dark/0  to-basement-light border-b-2 border-white relative">
                   <Image
                     alt={product.name}
+                    objectFit="contain"
                     height={512}
                     layout="responsive"
                     src={product.image}
