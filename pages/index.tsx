@@ -17,7 +17,7 @@ import { formatMoney } from "@/utils/moneyFormat";
 const phrase = "A man can’t have enough base­ment swag";
 const Home: NextPage<Props> = ({ products }) => {
   console.log(products);
-  const { addToCart } = useCart();
+  const { addToCart, toogleModal } = useCart();
   return (
     <>
       <section className="max-w-screen-xl mx-auto lg:px-8 px-4">
@@ -73,7 +73,10 @@ const Home: NextPage<Props> = ({ products }) => {
                     </div>
                     <button
                       className="relative uppercase text-3xl text-transparent font-bold   text-black outline-text"
-                      onClick={() => addToCart(product)}
+                      onClick={() => {
+                        addToCart(product);
+                        toogleModal(true);
+                      }}
                     >
                       Add to cart
                     </button>

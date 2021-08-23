@@ -8,13 +8,21 @@ interface CartItem {
 }
 type globalContext = {
   cart: CartItem[];
+  cartModal: boolean;
+  toogleModal: (bool: boolean) => void;
   addToCart: (product: Product) => void;
+  removeByOneFromCart: (product: Product) => void;
   removeFromCart: (product: Product) => void;
+  setOption: (index: number, value: string) => void;
   total: number;
 };
 const globalContextDefaultValues: globalContext = {
   cart: [],
+  cartModal: false,
+  toogleModal: (bool: boolean) => {},
   addToCart: (product: Product) => {},
+  removeByOneFromCart: (product: Product) => {},
+  setOption: (index: number, value: string) => {},
   removeFromCart: (product: Product) => {},
   total: 0,
 };
@@ -29,6 +37,7 @@ type Props = {
 
 export function GlobalProvider({ children }: Props) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartModal, setCartModal] = useState(false);
 
   const addToCart = (product: Product) => {
     const productFromCart = cart.find((row) => row.product.id === product.id);
@@ -47,7 +56,21 @@ export function GlobalProvider({ children }: Props) {
   };
 
   const removeFromCart = (product: Product) => {
-    setCart(cart.filter((row) => row.product.id !== product.id));
+    setCart([...cart.filter((row) => row.product.id !== product.id)]);
+  };
+  const removeByOneFromCart = (product: Product) => {
+    const indexProductFromCart = cart.findIndex(
+      (row) => row.product.id === product.id
+    );
+    if (cart[indexProductFromCart].quantity > 1) {
+      cart[indexProductFromCart].quantity--;
+      setCart([...cart]);
+    } else {
+      removeFromCart(product);
+    }
+  };
+  const toogleModal = (bool: boolean) => {
+    setCartModal(bool);
   };
   const total = React.useMemo(
     () =>
@@ -57,11 +80,20 @@ export function GlobalProvider({ children }: Props) {
       ),
     [cart]
   );
+  const setOption = (index: number, value: string) => {
+    console.log(value);
+    cart[index].optionSelected = value;
+    setCart([...cart]);
+  };
   const value = {
     cart,
+    removeByOneFromCart,
+    cartModal,
+    toogleModal,
     addToCart,
     removeFromCart,
     total,
+    setOption,
   };
   return (
     <>
