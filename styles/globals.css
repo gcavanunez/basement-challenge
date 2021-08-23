@@ -27,7 +27,7 @@ a {
 }
 
 .marquee {
-  animation: 12.3571s linear -1s infinite normal none running marquee;
+  animation: 12.25s linear -1s infinite normal none running marquee;
   padding-right: 50px;
 }
 @keyframes marquee {

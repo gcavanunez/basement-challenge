@@ -1,5 +1,11 @@
 import { Product } from "@/product/types";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface CartItem {
   quantity: number;
@@ -38,7 +44,22 @@ type Props = {
 export function GlobalProvider({ children }: Props) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartModal, setCartModal] = useState(false);
-
+  const [hasInit, setHasInit] = useState(false);
+  useEffect(() => {
+    const cartLocalStorage = window.localStorage.getItem("cart");
+    if (cartLocalStorage) {
+      // potential error if cart on localstorage iis out of sync with structured,
+      // needs to implement some error checking or throw condition to set back to empty
+      setCart(JSON.parse(cartLocalStorage));
+    }
+    setHasInit(true);
+  }, []);
+  useEffect(() => {
+    if (!hasInit) {
+      return;
+    }
+    window.localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
   const addToCart = (product: Product) => {
     const productFromCart = cart.find((row) => row.product.id === product.id);
     if (productFromCart) {

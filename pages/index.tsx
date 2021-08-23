@@ -16,7 +16,6 @@ interface Props {
 import { formatMoney } from "@/utils/moneyFormat";
 const phrase = "A man can’t have enough base­ment swag";
 const Home: NextPage<Props> = ({ products }) => {
-  console.log(products);
   const { addToCart, toogleModal } = useCart();
   return (
     <>
