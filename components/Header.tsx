@@ -170,7 +170,7 @@ const Header = () => {
                                         <button>+</button>
                                       </span>
                                     </div>
-                                    <div className="flex justify-betwee n sm:flex-row flex-col sm:mt-2 mt-1">
+                                    <div className="flex sm:justify-between md:flex-row flex-col sm:mt-2 mt-1">
                                       {product.options.map((option) => (
                                         <RadioGroup
                                           value={plan}
