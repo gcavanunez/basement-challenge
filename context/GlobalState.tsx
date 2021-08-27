@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 interface CartItem {
+  // add cart item id => two of the same shirts but with diferent sizes
   quantity: number;
   optionSelected: string;
   product: Product;
